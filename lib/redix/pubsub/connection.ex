@@ -289,19 +289,6 @@ defmodule Redix.PubSub.Connection do
 
   ## Helpers
 
-  defp handle_monitor_disconnect_message(pid, data) do
-    data = update_in(data.monitors, &Map.delete(&1, pid))
-
-    targets = Map.keys(data.subscriptions)
-    channels = for {:channel, channel} <- targets, do: channel
-    patterns = for {:pattern, pattern} <- targets, do: pattern
-
-    with {:ok, data} <- unsubscribe_pid_from_targets(data, :unsubscribe, channels, pid),
-         {:ok, data} <- unsubscribe_pid_from_targets(data, :punsubscribe, patterns, pid) do
-      data
-    end
-  end
-
   defp new_bytes(data, "") do
     {:ok, data}
   end
