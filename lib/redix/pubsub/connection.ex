@@ -27,8 +27,15 @@ defmodule Redix.PubSub.Connection do
   @impl true
   def init(opts) do
     transport = if(opts[:ssl], do: :ssl, else: :gen_tcp)
-    monitor_absorb_timeout = if(opts[:monitor_absorb_timeout], do: opts[:monitor_absorb_timeout], else: nil)
-    {:ok, monitor_pid} = Redix.PubSub.Connection.Monitor.start_link(conn: self(), absorb_timeout: monitor_absorb_timeout)
+
+    monitor_absorb_timeout =
+      if(opts[:monitor_absorb_timeout], do: opts[:monitor_absorb_timeout], else: nil)
+
+    {:ok, monitor_pid} =
+      Redix.PubSub.Connection.Monitor.start_link(
+        conn: self(),
+        absorb_timeout: monitor_absorb_timeout
+      )
 
     data = %__MODULE__{
       opts: opts,
@@ -467,7 +474,8 @@ defmodule Redix.PubSub.Connection do
 
   # Returns {targets_to_unsubscribe_from, data}.
   defp unsubscribe_pid_from_targets(data, operation, targets, pid)
-       when is_pid(pid), do: unsubscribe_pid_from_targets(data, operation, targets, MapSet.new([pid]))
+       when is_pid(pid),
+       do: unsubscribe_pid_from_targets(data, operation, targets, MapSet.new([pid]))
 
   defp unsubscribe_pid_from_targets(data, operation, targets, pids) do
     target_type =
@@ -501,7 +509,8 @@ defmodule Redix.PubSub.Connection do
   end
 
   defp unsubscribe_pid_from_target(target_state, pid)
-       when is_pid(pid), do: unsubscribe_pid_from_target(target_state, MapSet.new([pid]))
+       when is_pid(pid),
+       do: unsubscribe_pid_from_target(target_state, MapSet.new([pid]))
 
   defp unsubscribe_pid_from_target({:subscribed, subscribers}, pids) do
     if MapSet.size(subscribers) == 1 and MapSet.subset?(subscribers, pids) do

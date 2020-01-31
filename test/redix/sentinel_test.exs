@@ -62,7 +62,8 @@ defmodule Redix.SentinelTest do
 
   test "sentinel supports password", %{sentinel_config: sentinel_config} do
     sentinel_config =
-      Keyword.merge(sentinel_config,
+      Keyword.merge(
+        sentinel_config,
         password: "sentinel-password",
         sentinels: ["redis://localhost:26383"]
       )

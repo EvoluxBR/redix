@@ -16,7 +16,7 @@ defmodule Redix.StartOptions do
     backoff_max: 30000,
     exit_on_disconnection: false,
     timeout: 5000,
-    monitor_absorb_timeout: 1_000,
+    monitor_absorb_timeout: 1_000
   ]
 
   @allowed_options [:host, :port, :database, :password, :name, :sentinel] ++

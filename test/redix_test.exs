@@ -74,7 +74,8 @@ defmodule RedixTest do
 
     test "using a rediss:// url, ignoring certificate" do
       {:ok, pid} =
-        Redix.start_link("rediss://localhost:6384/3",
+        Redix.start_link(
+          "rediss://localhost:6384/3",
           socket_opts: [verify: :verify_none, reuse_sessions: false]
         )
 
@@ -86,7 +87,8 @@ defmodule RedixTest do
         Process.flag(:trap_exit, true)
 
         assert {:error, error} =
-                 Redix.start_link("rediss://localhost:6384/3",
+                 Redix.start_link(
+                   "rediss://localhost:6384/3",
                    socket_opts: [reuse_sessions: false],
                    sync_connect: true
                  )
